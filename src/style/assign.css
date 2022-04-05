@@ -1,6 +1,9 @@
 .assignCard{
     width: 70%;
 }
+.assignCard h1{
+    text-align: center;
+}
 
 .nameSection h2 , p {
     margin : 0 ; 
