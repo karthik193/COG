@@ -1,0 +1,31 @@
+.assignCard{
+    width: 70%;
+}
+
+.nameSection h2 , p {
+    margin : 0 ; 
+    padding: 0;
+    color : black;
+}
+
+.nameSection , .detailsSection{
+    padding: 1rem;
+}
+
+table{
+    width: 100%;
+    text-align: left;
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+td{
+    padding:  1rem;
+    
+}
+
+tr:nth-child(even){
+    background-color: rgb(0 , 0 , 0 , 0.01);
+}
+tr:nth-child(odd){
+    background-color: rgb(0 , 0 , 0 , 0.1);
+}

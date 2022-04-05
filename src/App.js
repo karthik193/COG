@@ -1,23 +1,42 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
+import SignUp from './pages/sign-up';
 import './App.css';
+import Search from "./pages/search";
+import Loading from "./components/loading";
+import { useEffect } from "react";
+import Assign from "./pages/assign";
 
 function App() {
+
+  useEffect(()=>{
+    
+  },[]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    
+    <div className="App" >
+      {window.location.pathname !=="/loading"?
+      <div>
+      <div className='wave'></div>
+      <div className="logoContainer" align="center">
+        <div  className="logo">
+            <div className="charge"><div className="inside"></div></div>
+        </div>
+      </div>
+    </div>:
+    null}
+      
+      <div>
+        <Router>
+          <Routes>
+              <Route exact path="/" element={<SignUp />} />
+              <Route exact path="/login" element={<SignUp />} />
+              <Route exact path="/search" element={<Search />} />
+              <Route exact path="/loading" element={<Loading />} />
+              <Route exact path="/assign" element={<Assign />} />
+          </Routes>
+        </Router>
+      </div>
+      
     </div>
   );
 }
