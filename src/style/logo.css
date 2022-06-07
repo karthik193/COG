@@ -1,0 +1,29 @@
+.logo{
+    border-radius: 60%;
+    border: 3px solid black ; 
+    background: white;
+    box-shadow: 0rem 0rem 1.5rem 1px rgba(255, 255, 255, 1); 
+    width: 3.3rem;
+    height: 3.3rem;
+    margin: 0;
+
+}
+
+.charge{
+    position:relative;
+    clip-path: polygon(9% 60%, 75% 0%, 54% 33%, 89% 33%, 16% 100%, 40% 60%);
+    width: 4rem;
+    height: 4rem;
+    background-color: black;   
+
+}
+.charge .inside {
+    position: absolute;
+    top: 4px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;  
+    background-color: #FDFF32;
+    clip-path: polygon(9% 60%, 75% 0%, 54% 33%, 89% 33%, 16% 100%, 40% 60%);
+
+}

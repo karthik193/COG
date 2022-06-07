@@ -1,76 +1,101 @@
-import {React , useState , useEffect , useRef} from "react" ; 
+import {getFirestore , collection, query , setDoc  , doc} from "firebase/firestore";
+import {React , useState} from "react" ; 
 import { useNavigate } from "react-router-dom";
 import '../style/common.css'; 
 import '../style/search.css';
 
-let autoComplete;
 
-    const loadScript = (url, callback) => {
-      let script = document.createElement("script");
-      script.type = "text/javascript";
-    
-      if (script.readyState) {
-        script.onreadystatechange = function() {
-          if (script.readyState === "loaded" || script.readyState === "complete") {
-            script.onreadystatechange = null;
-            callback();
-          }
-        };
-      } else {
-        script.onload = () => callback();
-      }
-    
-      script.src = url;
-      document.getElementsByTagName("head")[0].appendChild(script);
-    };
-    
-    function handleScriptLoad(updateQuery, autoCompleteRef) {
-      autoComplete = new window.google.maps.places.Autocomplete(
-        autoCompleteRef.current,
-        { types: ["(cities)"], componentRestrictions: { country: "us" } }
-      );
-      autoComplete.setFields(["address_components", "formatted_address"]);
-      autoComplete.addListener("place_changed", () =>
-        handlePlaceSelect(updateQuery)
-      );
-    }
-    
-    async function handlePlaceSelect(updateQuery) {
-      const addressObject = autoComplete.getPlace();
-      const query = addressObject.formatted_address;
-      updateQuery(query);
-      console.log(addressObject);
-}
 export default function Search(){
 
     
-    const navigator  = useNavigate(); 
-    const [query, setQuery] = useState("");
-    const autoCompleteRef = useRef(null);
-    
-    useEffect(() => {
-        loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`,
-        () => handleScriptLoad(setQuery, autoCompleteRef)
-        );
-    }, []);
+    const navigate  = useNavigate(); 
+    const [request, setQuery] = useState("");
+    const [chargeQuantity , setChargeQuantity] = useState(0);
+    const [lat , setLat] = useState(""); 
+    const [lng , setLng] = useState("");
 
-
-    var handleSubmit  = (event)=>{
+    var handleSubmit  = async (event)=>{
         event.preventDefault() ; 
+        if(chargeQuantity <=0  || request  === ""){
+            alert("invalid inputs"); 
+            return ;
+        }
 
-        navigator('/assign'); 
+        // sendMessage({
+        //     location : query, 
+        //     quantity : chargeQuantity
+        // })
+
+        //addding to requests
+        var requestId  = Date.now().toString();
+        const db  = getFirestore();
+        const requestCollection  = collection(db , 'requests');
+
+        const docSnap = await setDoc(doc(requestCollection , requestId) , {
+            userId : localStorage.getItem("email"),
+            amount : chargeQuantity,
+            location : request
+        }) ; 
+
+        navigate('/assign/' + requestId, {
+            location : query,
+            chargeQuantity : chargeQuantity
+        }); 
     }
+    // const db = getDatabase();
+    // function sendMessage(request) {
+      
+    //     // get values to be submitted
+    //     const timestamp = Date.now();
+      
+    //     // create db collection and send in the data
+    //     const username = localStorage.getItem("email");
+    //     db.ref("requests/" + timestamp).set({
+    //       username,
+    //       request,
+    //     });
+    //   } 
+  
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                setLat(pos.coords.latitude); 
+                setLng(pos.coords.longitude);
+                return (pos.coords.latitude + "," + pos.coords.longitude);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+            return null ; 
+        }
+    }
+    getLocation();
+    const handleCurrentLocation = (event)=>{
+        var locationElement  = document.getElementById("search_input") ; 
+        locationElement.value  = "getting current location";
+        setTimeout(()=>{
+            locationElement.value  = lat + "," + lng ;
+            setQuery(locationElement.value);
+        }, 1000);
+        
+
+    }
+
     return(
         <div>
             <div className="registerSection" align="center">
-                <div className="card searchCard">
+              <div className="card searchCard" align="left">
                 <form onSubmit={handleSubmit}>
                     <input 
                     placeholder="📍 Enter Location" 
                     type = "text" id="search_input"
-                    ref={autoCompleteRef}
+                    name = "location"
                     onChange={event => setQuery(event.target.value)}
+                    />
+                    <p onClick={handleCurrentLocation}><i class="fa fa-map-marker"></i> Use Current Location</p>
+                    <input
+                        type = "number"
+                        placeholder="Enter Amout of Charge"
+                        onChange = {event => setChargeQuantity(event.target.value)}
                     />
                     <button className="submitButton" type="submit">Search Provider</button>
                 </form> 

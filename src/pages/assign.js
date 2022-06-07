@@ -1,8 +1,24 @@
-import React from "react" ; 
+import React, { useState } from "react" ; 
 import '../style/common.css'; 
 import '../style/assign.css'; 
 
 export default function Assign(){
+
+    const [lat , setLat] = useState(""); 
+    const [lng , setLng] = useState(""); 
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos)=>{
+                setLat(pos.coords.latitude); 
+                setLng(pos.coords.longitude);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    getLocation();
+
     return(
         <div>
             <div className="registerSection" align="center">
@@ -22,12 +38,17 @@ export default function Assign(){
                            
                             <tr>
                                 <td>Location</td>
-                                <td>Near KPHB Metro Station </td>
+                                <td id="demo" > {lat + "," + lng} [<a href={"https://www.google.com/maps/search/"+lat + "," + lng} target="#">Maps</a>] </td>
                             </tr>
                             
                             <tr>
                                 <td>Bike Number</td>
                                 <td>TS E11 2354</td>
+                            </tr>
+
+                            <tr>
+                                <td>Amount</td>
+                                <td>{10}</td>
                             </tr>
 
                             <tr>
@@ -42,6 +63,8 @@ export default function Assign(){
                 </div>
             </div>
             </div>
+
+            
         </div>
     );
 }

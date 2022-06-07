@@ -15,6 +15,14 @@
     padding: 1rem;
 }
 
+@media (max-width: 400px) {
+    .detailsSection {
+        padding: .4rem;
+        font-size: 1rem;
+      
+    }
+}
+
 table{
     width: 100%;
     text-align: left;
@@ -22,7 +30,7 @@ table{
     overflow: hidden;
 }
 td{
-    padding:  1rem;
+    padding:  .7rem;
     
 }
 
