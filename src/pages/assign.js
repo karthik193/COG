@@ -47,7 +47,7 @@ export default function Assign(){
                             </tr>
 
                             <tr>
-                                <td>Amount</td>
+                                <td>Amount to be paid</td>
                                 <td>{10}</td>
                             </tr>
 

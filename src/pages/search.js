@@ -31,16 +31,13 @@ export default function Search(){
         const db  = getFirestore();
         const requestCollection  = collection(db , 'requests');
 
-        const docSnap = await setDoc(doc(requestCollection , requestId) , {
-            userId : localStorage.getItem("email"),
-            amount : chargeQuantity,
-            location : request
-        }) ; 
+        // const docSnap = await setDoc(doc(requestCollection , requestId) , {
+        //     userId : localStorage.getItem("email"),
+        //     amount : chargeQuantity,
+        //     location : request
+        // }) ; 
 
-        navigate('/assign/' + requestId, {
-            location : query,
-            chargeQuantity : chargeQuantity
-        }); 
+        navigate('/assign?id=' + requestId); 
     }
     // const db = getDatabase();
     // function sendMessage(request) {
