@@ -98,7 +98,7 @@ input:hover, input:active{
     cursor: pointer;
     outline: none;
     margin-top: 3rem;
-   }
+}
    
 .submitButton:hover {
     background-color: #FDFF32;

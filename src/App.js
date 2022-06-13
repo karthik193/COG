@@ -48,11 +48,11 @@ function App() {
               <Route exact path="/" element={<SignUp />} />
               <Route exact path="/search" element={ <PrivateRoute><Search /></PrivateRoute> } />
               <Route exact path="/loading" element={<Loading />} />
-              <Route exact path="/assign" element={ <PrivateRoute><Assign /></PrivateRoute>} />
-              <Route exact path="/requests" element={ <PrivateRoute><Requests /></PrivateRoute>} />
+              <Route exact path="/request" element={ <PrivateRoute><Assign /></PrivateRoute>} />
+              <Route exact path="/myrequests" element={ <PrivateRoute><Requests /></PrivateRoute>} />
           </Routes>
           { 
-            localStorage.getItem("logged") === "true" ? 
+            localStorage.getItem("logged") === "true" && window.location.pathname !=="/" ? 
             <div 
               className="logoutButton" 
               onClick={()=> handleLogOut()}

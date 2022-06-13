@@ -5,3 +5,15 @@
 .searchCard button{
     width: fit-content;
 } 
+.currentLocBtn{
+    border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1),0px 8px 15px rgb(255, 255, 255,0.8);;
+    width: fit-content;
+    background-color: rgb(255, 255, 49);
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.currentLocBtn:hover{
+    font-weight: bold;
+}

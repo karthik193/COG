@@ -1,6 +1,7 @@
 import {getFirestore , collection, query , setDoc  , doc} from "firebase/firestore";
 import {React , useState} from "react" ; 
 import { useNavigate } from "react-router-dom";
+import getNewProvider, { addNewRequest } from "../functions/database";
 import '../style/common.css'; 
 import '../style/search.css';
 
@@ -21,37 +22,27 @@ export default function Search(){
             return ;
         }
 
-        // sendMessage({
-        //     location : query, 
-        //     quantity : chargeQuantity
-        // })
-
         //addding to requests
-        var requestId  = Date.now().toString();
         const db  = getFirestore();
-        const requestCollection  = collection(db , 'requests');
+        const newRequest  = {
+            userId : localStorage.getItem("email"), 
+            userLoc : lat + "," + lng, 
+            userMno : localStorage.getItem("mobileNo"),
+            amt : chargeQuantity * 1, 
+            chargeAmt : chargeQuantity, 
+            declinedList : [],
+            id : "", 
+            providerId : await getNewProvider().then(res=> res), 
+            providerLoc: "", 
+            providerMno: "", 
+            status : 0
+        }
 
-        // const docSnap = await setDoc(doc(requestCollection , requestId) , {
-        //     userId : localStorage.getItem("email"),
-        //     amount : chargeQuantity,
-        //     location : request
-        // }) ; 
-
-        navigate('/assign?id=' + requestId); 
+        console.log(newRequest , "<NEW REQUEST>" )
+        addNewRequest(newRequest);
+        navigate('/myrequests'); 
     }
-    // const db = getDatabase();
-    // function sendMessage(request) {
-      
-    //     // get values to be submitted
-    //     const timestamp = Date.now();
-      
-    //     // create db collection and send in the data
-    //     const username = localStorage.getItem("email");
-    //     db.ref("requests/" + timestamp).set({
-    //       username,
-    //       request,
-    //     });
-    //   } 
+    
   
     function getLocation() {
         if (navigator.geolocation) {
@@ -88,14 +79,27 @@ export default function Search(){
                     name = "location"
                     onChange={event => setQuery(event.target.value)}
                     />
-                    <p onClick={handleCurrentLocation}><i class="fa fa-map-marker"></i> Use Current Location</p>
+                    <p onClick={handleCurrentLocation} className="currentLocBtn"> Use Current Location</p>
                     <input
                         type = "number"
                         placeholder="Enter Amout of Charge"
                         onChange = {event => setChargeQuantity(event.target.value)}
                     />
+                    <div>
                     <button className="submitButton" type="submit">Search Provider</button>
-                </form> 
+                    <button className="backToHomeBtn" style = {{ 
+                        float : "right"
+
+                    }}
+                    onClick={()=>{
+                        navigate("/myrequests");
+                    }}
+                    >MY REQUESTS</button> 
+                    </div>
+                    
+                </form>
+
+                
                 
             </div>
             </div>

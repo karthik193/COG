@@ -1,10 +1,9 @@
 import React, { useState } from "react" ;
 import { getAuth ,  createUserWithEmailAndPassword , signInWithEmailAndPassword } from "firebase/auth";
-
-
 import '../style/common.css'; 
 import '../style/signUp.css';
 import { useNavigate } from "react-router-dom";
+import { getUserDetails } from "../functions/database";
 
 export default function SignUp(){
 
@@ -49,6 +48,13 @@ export default function SignUp(){
             const user = userCredential.user;
             // ...
             localStorage.setItem("logged" , true); 
+            localStorage.setItem("email" , email);
+            
+            getUserDetails().then(res => {
+                localStorage.setItem("mobileNo" , res.mobileNo); 
+                localStorage.setItem("id" , res.id); 
+
+            });
             navigate('/search'); 
         })
         .catch((error) => {

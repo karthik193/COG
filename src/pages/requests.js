@@ -3,64 +3,70 @@ import RequestCard from "../components/requestCard";
 import "../style/common.css";
 import "../style/requests.css";
 import firebase from "../firebase";
+import { collection, Firestore, getDocs, getFirestore, query, where } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 export default function Requests(){
-    const [requests , setRequests] = useState([{
-        userData : {
-            id: "karthik.pasupulatei", 
-            location : "17.3602217,78.5079683"
-        }
-    },
-    {
-        userData : {
-            id: "karthik.pasupulatei", 
-            location : "17.3602217,78.5079683"
-        }
-    }]); 
+    const [requests , setRequests] = useState([]); 
+
+    const firestore  = getFirestore();
+    const navigate  = useNavigate() ;
 
     useEffect(()=>{
         // load requests from the real time database
+
+        
+        const userId  = localStorage.getItem("email"); 
+        const requestCollection = collection(firestore, "requests");
+        const getRequest = async ()=>{
+            const q  = query(requestCollection , where("userId" , "==" , userId));
+            const querySnapshot = await getDocs(q); 
+            var res  = [] ; 
+            querySnapshot.forEach(doc =>{
+                console.log("ere")
+                console.log(doc.data(), "data");
+
+                res.push({ 
+                    ...doc.data(),
+                    id : doc.id,
+                });
+            })
+            setRequests(res);
+        }
+
+        getRequest();
+
     },[]); 
 
-    const handleAcceptRequest = (userData)=>{
 
+    const handleViewRequest = (requestId)=>{
+        navigate("/request?id=" + requestId)
     }
-    const handleDeclineRequest = (userData)=>{
-
-    }
-
-    const db = firebase.database() ;
-    const fetchRequest = db.ref("requests/")
-    fetchRequest.on("child_added", function (snapshot) {
-        const message = snapshot.val();
-        requests.setRequests(preRequests =>{
-            return(
-                [
-                    ...preRequests,
-                    {
-                        userData : message
-                    }
-                ]
-            )
-        })
-    });
+    console.log(requests , "requests");
     return(
         <div >
             <div className="registerSection" align="center">
                 <div className="card">REQUESTS</div>
+                <button className="backToHomeBtn" style = {{ 
+                        marginLeft : ".2rem", 
+
+                    }}
+                    onClick={()=>{
+                        navigate("/search");
+                    }}
+                    >Back to Home</button>
                 <div  className="requestsSection">
                 {
                     requests.map((request , index)=>{
 
                         console.log(request)
                         return(
-                            <div>
-                                <RequestCard
-                                key={index}
-                                userData={request.userData} 
-                                onAccept={()=>handleAcceptRequest(request.userData)}  
-                                onDecline={()=>handleDeclineRequest(request.userData)} 
-                                ></RequestCard>
+                            <div className="requestCardSection" align="left">
+                                <h5>Provider Id</h5>
+                                <p>{request.providerId}</p>
+                                <h5>Charge Requested</h5>
+                                <p>{request.chargeAmt}</p>
+                                <button onClick={()=>handleViewRequest(request.id)}>View Request Details</button>
                             </div>
                         );
                     })
