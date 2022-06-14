@@ -71,7 +71,7 @@ export default function Assign(){
                                             </tbody>
                                         </table>
                                     <button class="submitButton" onClick = {()=>{
-                                    window.open("tel:" + "6281058812") }}>Call</button>
+                                    window.open("tel:" + request.providerMno) }}>Call</button>
                                     
                                 </div>: 
                                 null 
