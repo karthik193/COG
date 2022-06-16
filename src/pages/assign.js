@@ -12,9 +12,6 @@ export default function Assign(){
     const requestId  = searchParams.get("id"); 
     const firestore  = getFirestore() ; 
 
-    getDoc(doc(firestore , "requests" , requestId)).then( d=>{
-        setRequest(d.data());
-    })
     useEffect(()=>{
         getDoc(doc(firestore , "requests" , requestId)).then( d=>{
             setRequest(d.data());
@@ -37,12 +34,17 @@ export default function Assign(){
                                 {request.status == 1 ? <p>is getting things ready for you.</p> : null}
                                 {request.status == 2 ? <p>is on his way to your location.</p> : null}
                                 {request.status == 3 ? <p>reached your location.</p> : null}
+                                {request.status == 4 ? <p>OTP VERFIED.</p> : null}
                             </div>
                             {
                                 request.status > 0 ?
                                 <div class="detailsSection">
                                         <table>
                                             <tbody>
+                                                <tr>
+                                                    <td><strong>OTP</strong></td>
+                                                    <td>{request.otp}</td>
+                                                </tr>
                                                 <tr>
                                                     <td>Contact</td>
                                                     <td>+91 {request.providerMno}</td>

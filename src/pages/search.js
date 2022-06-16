@@ -3,6 +3,7 @@ import {getFirestore} from "firebase/firestore";
 import {React , useState} from "react" ; 
 import { useNavigate } from "react-router-dom";
 import getNewProvider, { addNewRequest } from "../functions/database";
+import { generateOTP } from "../functions/helpers";
 import '../style/common.css'; 
 import '../style/search.css';
 
@@ -37,7 +38,8 @@ export default function Search(){
             providerId : await getNewProvider().then(res=> res), 
             providerLoc: "", 
             providerMno: "", 
-            status : 0
+            status : 0,
+            otp : await generateOTP().then(res=>res),
         }
 
         console.log(newRequest , "<NEW REQUEST>" )
