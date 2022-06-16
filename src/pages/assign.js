@@ -60,12 +60,12 @@ export default function Assign(){
             
                                                 <tr>
                                                     <td>Amount to be paid</td>
-                                                    <td>{request.amt}</td>
+                                                    <td>{request.amt*4} Rs</td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Charge Requested</td>
-                                                    <td>{request.chargeAmt}</td>
+                                                    <td>{request.chargeAmt}%</td>
                                                 </tr>
                                                 
                                             </tbody>

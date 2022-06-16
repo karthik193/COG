@@ -61,11 +61,11 @@ export default function Requests(){
 
                         console.log(request)
                         return(
-                            <div className="requestCardSection" align="left">
+                            <div className="requestCardSection" align="left" key={index}>
                                 <h5>Provider Id</h5>
                                 <p>{request.providerId}</p>
                                 <h5>Charge Requested</h5>
-                                <p>{request.chargeAmt}</p>
+                                <p>{request.chargeAmt}%</p>
                                 <button onClick={()=>handleViewRequest(request.id)}>View Request Details</button>
                             </div>
                         );

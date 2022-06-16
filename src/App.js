@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router,Route, Routes} from "react-router-dom";
 import SignUp from './pages/sign-up';
 import './App.css';
 import './style/common.css'
@@ -9,27 +9,13 @@ import Assign from "./pages/assign";
 import Logo from "./components/logo";
 import PrivateRoute from "./components/PrivateRoute";
 import Requests from "./pages/requests";
-import { getAuth } from "firebase/auth";
 
 function App() {
 
-
-
-  const auth = getAuth();
-  const navigate = useNavigate();
   useEffect(()=>{
     
   },[]);
 
-
-  const handleLogOut  = ()=>{
-    localStorage.clear();
-    auth.signOut();
-
-    setTimeout(() => {
-      navigate("/");
-    }, 200);
-  }
   return (
     
     <div className="App" >
@@ -51,14 +37,6 @@ function App() {
               <Route exact path="/request" element={ <PrivateRoute><Assign /></PrivateRoute>} />
               <Route exact path="/myrequests" element={ <PrivateRoute><Requests /></PrivateRoute>} />
           </Routes>
-          { 
-            localStorage.getItem("logged") === "true" && window.location.pathname !=="/" ? 
-            <div 
-              className="logoutButton" 
-              onClick={()=> handleLogOut()}
-            >Log Out</div> : 
-            null
-          }
       </div>
       
     </div>

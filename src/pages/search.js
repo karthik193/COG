@@ -1,4 +1,5 @@
-import {getFirestore , collection, query , setDoc  , doc} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import {getFirestore} from "firebase/firestore";
 import {React , useState} from "react" ; 
 import { useNavigate } from "react-router-dom";
 import getNewProvider, { addNewRequest } from "../functions/database";
@@ -14,6 +15,7 @@ export default function Search(){
     const [chargeQuantity , setChargeQuantity] = useState(0);
     const [lat , setLat] = useState(""); 
     const [lng , setLng] = useState("");
+    const auth = getAuth();
 
     var handleSubmit  = async (event)=>{
         event.preventDefault() ; 
@@ -68,6 +70,15 @@ export default function Search(){
 
     }
 
+    const handleLogOut  = ()=>{
+        localStorage.clear();
+        auth.signOut();
+    
+        setTimeout(() => {
+          navigate("/");
+        }, 200);
+    }
+
     return(
         <div>
             <div className="registerSection" align="center">
@@ -80,6 +91,8 @@ export default function Search(){
                     onChange={event => setQuery(event.target.value)}
                     />
                     <p onClick={handleCurrentLocation} className="currentLocBtn"> Use Current Location</p>
+
+                    <h5>Charge Required (%) </h5>
                     <input
                         type = "number"
                         placeholder="Enter Amout of Charge"
@@ -103,6 +116,11 @@ export default function Search(){
                 
             </div>
             </div>
+
+            <div 
+            className="logoutButton" 
+            onClick={()=> handleLogOut()}
+            >Log Out</div> 
         </div>
     );
 }

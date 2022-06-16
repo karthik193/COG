@@ -1,4 +1,4 @@
-import React, { useState } from "react" ;
+import React, { useEffect, useState } from "react" ;
 import { getAuth ,  createUserWithEmailAndPassword , signInWithEmailAndPassword } from "firebase/auth";
 import '../style/common.css'; 
 import '../style/signUp.css';
@@ -7,18 +7,22 @@ import { getUserDetails } from "../functions/database";
 
 export default function SignUp(){
 
-
-    const [infoDisplay , setID] = useState("none"); 
-    const [CR , setCR] = useState(null);
+    
+    const [infoDisplay , setID] = useState("none");
     const [ls , setLS] = useState(true); 
     const [consumer , setConsumer] = useState(true); 
 
     const auth = getAuth();
-    const navigate = useNavigate() ;  
+    const navigate = useNavigate() ; 
     
-    if(localStorage.getItem("logged") === "true"){
-        navigate('/search');
-    }
+
+    useEffect(()=>{
+        const isAuth = localStorage.getItem("logged"); 
+        if(isAuth && isAuth !== 'undefined'){
+            navigate("/search");
+        }
+    },[])
+
 
     var signUp = (email , password)=>{
         
@@ -35,7 +39,7 @@ export default function SignUp(){
             const errorCode = error.code;
             const errorMessage = error.message;
 
-            alert(errorMessage);
+            alert(errorCode ,errorMessage);
             
         });
 
