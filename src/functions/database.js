@@ -1,4 +1,4 @@
-import { addDoc, collection,getDocs, getFirestore, query, where } from "firebase/firestore";
+import { addDoc, collection,deleteDoc,doc,getDocs, getFirestore, query, where } from "firebase/firestore";
 
 
 const getNewProvider = async ()=>{
@@ -50,10 +50,14 @@ const addNewRequest = async (newRequest)=>{
     const firestore = getFirestore();
     await addDoc(collection(firestore , "requests") ,  newRequest );
 }
-
+const deleteRequest = async (requestId)=>{
+    const firestore = getFirestore(); 
+    await deleteDoc(doc(firestore, "requests", requestId)).then(()=> alert("Request Canceled"))
+}
 export default getNewProvider ;
 export {
     getNewProvider,
     getUserDetails, 
-    addNewRequest
+    addNewRequest,
+    deleteRequest
 }

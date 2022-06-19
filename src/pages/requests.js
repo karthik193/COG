@@ -5,6 +5,7 @@ import "../style/requests.css";
 import firebase from "../firebase";
 import { collection, Firestore, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { deleteRequest } from "../functions/database";
 
 export default function Requests(){
     const [requests , setRequests] = useState([]); 
@@ -42,6 +43,17 @@ export default function Requests(){
     const handleViewRequest = (requestId)=>{
         navigate("/request?id=" + requestId)
     }
+
+    const handleCancelRequest = (requestId , index)=>{
+        deleteRequest(requestId).then(()=>{
+
+            console.log("index>>" , index);
+            let filteredRequests = requests.filter((value , idx)=>{
+                return (idx !== index) ; 
+            })
+            setRequests(filteredRequests);
+        });
+    }
     console.log(requests , "requests");
     return(
         <div >
@@ -67,6 +79,12 @@ export default function Requests(){
                                 <h5>Charge Requested</h5>
                                 <p>{request.chargeAmt}%</p>
                                 <button onClick={()=>handleViewRequest(request.id)}>View Request Details</button>
+                                {
+                                    request.status === 0 ? 
+                                    <button onClick={()=>handleCancelRequest(request.id , index)}>Cancel Request</button>
+                                    : 
+                                    null
+                                }
                             </div>
                         );
                     })
